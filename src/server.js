@@ -1,5 +1,6 @@
 const express = require("express")
 const routes = require("./routes")
+const mongoose = require("mongoose")
 
 const app = express()
 
@@ -7,24 +8,17 @@ app.use(express.json())
 
 //Routes of API
 app.use(routes)
-app.listen(4000,()=>{
-    console.log("server is listing")
-})
 
-//password: zSGehVFqzW5JyVNk
-//mongodb+srv://gabriel:zSGehVFqzW5JyVNk@memorygame.axdfs1e.mongodb.net/MemoryGame?retryWrites=true&w=majority
-/*
+
 //Conecta MongoDB
-const dbUser = process.env.DB_USER
-const dbPassword = process.env.DB_PASS
 
 mongoose
-    .connect(`mongodb+srv://${dbUser}:${dbPassword}@memorygame.axdfs1e.mongodb.net/MemoryGame?retryWrites=true&w=majority`)
+    .connect("mongodb://localhost/predictball")
     .then(() => {
         console.log("Conectamos ao MongoDB!")
-        app.listen(3000, () => {
-            console.log("Server is listening");
+        app.listen(4000,()=>{
+            console.log("server is listing")
         })
+        mongoose.Promise = global.Promise
     })
     .catch((err) => console.log(err))
-*/
