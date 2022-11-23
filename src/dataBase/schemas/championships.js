@@ -8,7 +8,8 @@ const Championships = new mongoose.Schema({
         lowercase: true,
     },
     //Federação que organiza o campeonato. Ex:. CBF
-    organizer:{
+    idOrganizer:{
+        //type: mongoose.Types.ObjectId,
         type: String,
         requerid: true
     },
