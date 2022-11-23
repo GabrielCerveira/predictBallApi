@@ -1,6 +1,30 @@
 const mongoose = require("mongoose")
 
 const Matches = new mongoose.Schema({
+    //id do campeonato
+    idChampionship: {
+        type: mongoose.Types.ObjectId,
+        requerid: true,
+    },
+    //Rodada em que a partida será disputada
+    round: {
+        type: Number
+    },
+    //Fase do campeonato
+    /*
+    0: running stitches/pontos corridos
+    1:group/grupo
+    3:round of 32
+    3:round of 16 / oitavas de final
+    4:quarterfinals / quartas de final
+    5:semifinal / semifinal
+    6:final
+    */
+    stage: {
+        type: Number,
+        requerid: true,
+    },
+    
     //id da equipe da casa
     idHomeTeam: {
         type: mongoose.Types.ObjectId,
@@ -9,17 +33,18 @@ const Matches = new mongoose.Schema({
     //id da equipe visitante
     idAwayTeam:{
         type: mongoose.Types.ObjectId,
-        requerid: true,
-        
+        requerid: true,     
     },
     //inicias da equipe
     homeTeamInitials: {
         type: String,
         requerid: true,
+        lowercase: true,
     },
     awayTeamInitials: {
         type: String,
         requerid: true,
+        lowercase: true,
     },
     //Status da partida
     /*

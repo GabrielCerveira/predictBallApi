@@ -4,12 +4,15 @@ const mongoose = require("mongoose")
 class matchesController{
     // Create Team
     async create(request, response) {
-        const { idHomeTeam, idAwayTeam, homeTeamInitials, awayTeamInitials, status, matchDate, stadium, winner, homeTeamResult, awayTeamResult } = request.body
+        const {idChampionship,round,stage, idHomeTeam, idAwayTeam, homeTeamInitials, awayTeamInitials, status, matchDate, stadium, winner, homeTeamResult, awayTeamResult } = request.body
         try{    
             
             const user = await Matches.create({
+                idChampionship: mongoose.mongo.ObjectId(idChampionship),
                 idHomeTeam : mongoose.mongo.ObjectId(idHomeTeam), 
                 idAwayTeam: mongoose.mongo.ObjectId(idAwayTeam), 
+                round,
+                stage,
                 homeTeamInitials, 
                 awayTeamInitials, 
                 status, 
