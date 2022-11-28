@@ -63,15 +63,21 @@ class matchesController{
                             "foreignField" : "_id",
                             "as" : "championshipData"
                         }
-                    },
+                    },  
                     {
-                        "$group" : {
-                            "_id" : "$round",
-                            "round" : {
+                        $group : {
+                            "_id" : {groupIndentification:"$groupIndentification", round:"$round"},                
+                            "round":{
                                 "$push" : "$$ROOT"
                             }
                         }
-                    }
+                    },
+                    {
+                        "$sort": { "groupIndentification": 1 }
+                    },
+                    {
+                        "$sort": { "round": 1 }
+                    },
                 ],
             )
 
