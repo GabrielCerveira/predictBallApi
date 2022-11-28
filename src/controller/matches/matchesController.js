@@ -4,7 +4,7 @@ const mongoose = require("mongoose")
 class matchesController{
     // Create Team
     async create(request, response) {
-        const {idChampionship,round,stage, idHomeTeam, idAwayTeam, homeTeamInitials, awayTeamInitials, status, matchDate, stadium, winner, homeTeamResult, awayTeamResult } = request.body
+        const {idChampionship,round,stage,groupIndentification, idHomeTeam, idAwayTeam, /*homeTeamInitials, awayTeamInitials,*/ status, matchDate, stadium, winner, homeTeamResult, awayTeamResult } = request.body
         try{    
             
             const user = await Matches.create({
@@ -13,8 +13,9 @@ class matchesController{
                 idAwayTeam: mongoose.mongo.ObjectId(idAwayTeam), 
                 round,
                 stage,
-                homeTeamInitials, 
-                awayTeamInitials, 
+                groupIndentification,
+                //homeTeamInitials, 
+                //awayTeamInitials, 
                 status, 
                 matchDate, 
                 stadium, 
@@ -26,6 +27,57 @@ class matchesController{
             return response.json({
                 message: "A partida foi cadastrada com sucesso!",
                 user
+            })
+        } catch (error) {
+            return response.status(500).json({
+                error: "Registration failed",
+                message: error
+            })
+        }
+    }
+
+    async aggregateMatches(request, response){
+        try {
+            const match = await Matches.aggregate(
+                [
+                    {
+                        "$lookup" : {
+                            "from" : "teams",
+                            "localField" : "idHomeTeam",
+                            "foreignField" : "_id",
+                            "as" : "homeTeamData"
+                        }
+                    }, 
+                    {
+                        "$lookup" : {
+                            "from" : "teams",
+                            "localField" : "idAwayTeam",
+                            "foreignField" : "_id",
+                            "as" : "awayTeamData"
+                        }
+                    }, 
+                    {
+                        "$lookup" : {
+                            "from" : "championships",
+                            "localField" : "idChampionship",
+                            "foreignField" : "_id",
+                            "as" : "championshipData"
+                        }
+                    },
+                    {
+                        "$group" : {
+                            "_id" : "$round",
+                            "round" : {
+                                "$push" : "$$ROOT"
+                            }
+                        }
+                    }
+                ],
+            )
+
+            return response.json({
+                message: "Todas as partidas cadastradas",
+                match
             })
         } catch (error) {
             return response.status(500).json({

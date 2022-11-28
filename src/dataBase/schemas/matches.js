@@ -24,7 +24,11 @@ const Matches = new mongoose.Schema({
         type: Number,
         requerid: true,
     },
-    
+    //Informa o nome do grupo
+    groupIndentification:{
+        type: String,
+        requerid: true,
+    },
     //id da equipe da casa
     idHomeTeam: {
         type: mongoose.Types.ObjectId,
@@ -35,6 +39,7 @@ const Matches = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         requerid: true,     
     },
+    /*
     //inicias da equipe
     homeTeamInitials: {
         type: String,
@@ -45,7 +50,7 @@ const Matches = new mongoose.Schema({
         type: String,
         requerid: true,
         lowercase: true,
-    },
+    },*/
     //Status da partida
     /*
     Status:

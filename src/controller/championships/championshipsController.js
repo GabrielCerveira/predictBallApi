@@ -4,7 +4,7 @@ const Championship =  require("../../dataBase/schemas/championships")
 
 class championshipsController{
     async create(request, response){
-        const {name,idOrganazer,season,dateStarted,dateFinish} = request.body
+        const {name,idOrganizer,season,dateStarted,dateFinish} = request.body
         try {
             
             if(!name){
@@ -14,7 +14,7 @@ class championshipsController{
                 })
             }
 
-            if(!idOrganazer){
+            if(!idOrganizer){
                 return response.status(422).json({
                     error: "Erro de validação",
                     message: "A organização é obrigatória!",
@@ -51,8 +51,8 @@ class championshipsController{
 
             const championships = Championship.create({
                 name,
-                //idOrganazer: mongoose.mongo.ObjectId(idOrganazer),
-                idOrganazer,
+                //idOrganizer: mongoose.mongo.ObjectId(idOrganizer),
+                idOrganizer,
                 season,
                 dateStarted,
                 dateFinish

@@ -14,6 +14,7 @@ routes.post("/teams/create", teamsController.create)
 
 //Rota para criar uma partida
 routes.post("/matches/create", matchesController.create)
+routes.get("/matches/", matchesController.aggregateMatches)
 
 //Rota para criar um campeonato
 routes.post("/championships/create", championshipsController.create)
