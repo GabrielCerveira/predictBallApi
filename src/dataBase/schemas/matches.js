@@ -29,6 +29,10 @@ const Matches = new mongoose.Schema({
         type: String,
         requerid: true,
     },
+    groupNumber:{
+        type: Number,
+        requerid: true,
+    },
     //id da equipe da casa
     idHomeTeam: {
         type: mongoose.Types.ObjectId,

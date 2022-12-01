@@ -66,24 +66,37 @@ class matchesController{
                     },  
                     {
                         $group : {
-                            "_id" : {groupIndentification:"$groupIndentification", round:"$round"},                
+                            "_id" : {groupNumber:"$groupNumber", round:"$round"},                
                             "round":{
                                 "$push" : "$$ROOT"
                             }
                         }
                     },
                     {
-                        "$sort": { "groupIndentification": 1 }
-                    },
-                    {
-                        "$sort": { "round": 1 }
+                        "$sort": { "groupNumber": 1 }
                     },
                 ],
             )
+            const retorno = []
+            for (let index = 0; index < match.length; index++) {
+                const element = []
+                console.log("match",match[index]._id.groupNumber)
+                console.log("teste",
+                    retorno.map((e) => e._id.groupNumber).indexOf(match[index]._id.groupNumber)
+                )
+                if(element.indexOf(match[index]._id.groupNumber === -1)){
+                    element.push(match[index]) 
+                    console.log("antes")
+                    element.push(match.filter(e => e.groupNumber == element.groupNumber))
+                    console.log("depois")
+                    retorno.push(element) 
+                }
+            }  
+            
 
             return response.json({
                 message: "Todas as partidas cadastradas",
-                match
+                retorno
             })
         } catch (error) {
             return response.status(500).json({
