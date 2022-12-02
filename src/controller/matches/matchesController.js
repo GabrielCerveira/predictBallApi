@@ -4,7 +4,7 @@ const mongoose = require("mongoose")
 class matchesController{
     // Create Team
     async create(request, response) {
-        const {idChampionship,round,stage,groupIndentification, idHomeTeam, idAwayTeam, /*homeTeamInitials, awayTeamInitials,*/ status, matchDate, stadium, winner, homeTeamResult, awayTeamResult } = request.body
+        const {idChampionship,round,stage,groupIndentification, groupNumber,idHomeTeam, idAwayTeam, /*homeTeamInitials, awayTeamInitials,*/ status, matchDate, stadium, winner, homeTeamResult, awayTeamResult } = request.body
         try{    
             
             const user = await Matches.create({
@@ -14,6 +14,7 @@ class matchesController{
                 round,
                 stage,
                 groupIndentification,
+                groupNumber,
                 //homeTeamInitials, 
                 //awayTeamInitials, 
                 status, 
@@ -73,23 +74,28 @@ class matchesController{
                         }
                     },
                     {
-                        "$sort": { "groupNumber": 1 }
+                        "$sort": { "groupNumber": -1 }
                     },
                 ],
             )
             const retorno = []
             for (let index = 0; index < match.length; index++) {
-                const element = []
-                console.log("match",match[index]._id.groupNumber)
-                console.log("teste",
-                    retorno.map((e) => e._id.groupNumber).indexOf(match[index]._id.groupNumber)
-                )
-                if(element.indexOf(match[index]._id.groupNumber === -1)){
-                    element.push(match[index]) 
-                    console.log("antes")
-                    element.push(match.filter(e => e.groupNumber == element.groupNumber))
-                    console.log("depois")
-                    retorno.push(element) 
+                                
+                if(retorno.map((e) => e._id.groupNumber).indexOf(match[index]._id.groupNumber) === -1){
+                    const pos = retorno.length 
+                    console.log(match[index]._id)
+                    
+                    const teste = {
+                        _id : {},
+                        round:[]
+                    } 
+                    retorno[pos] = teste
+                    retorno[pos]._id = match[index]._id
+                    retorno[pos].round.push(match[index].round) 
+                    
+                }else{
+                    const pos = retorno.map((e) => e._id.groupNumber).indexOf(match[index]._id.groupNumber)
+                    retorno[pos].round.push(match[index].round)
                 }
             }  
             
@@ -108,3 +114,4 @@ class matchesController{
 }
 
 module.exports = new matchesController
+
