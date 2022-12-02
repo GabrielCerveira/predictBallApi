@@ -74,7 +74,7 @@ class matchesController{
                         }
                     },
                     {
-                        "$sort": { "groupNumber": -1 }
+                        "$sort": { "groupNumber": 1 }
                     },
                 ],
             )
@@ -83,8 +83,6 @@ class matchesController{
                                 
                 if(retorno.map((e) => e._id.groupNumber).indexOf(match[index]._id.groupNumber) === -1){
                     const pos = retorno.length 
-                    console.log(match[index]._id)
-                    
                     const teste = {
                         _id : {},
                         round:[]
@@ -99,6 +97,26 @@ class matchesController{
                 }
             }  
             
+            for (let index = 0; index < retorno.length; index++) {
+                
+                retorno[index].round.sort(function (a, b) {
+                    for (let index = 0; index < a.length; index++) {
+                        if(a[index].round>b[index].round){
+                            return 1
+                        }else{
+                            return -1
+                        }
+                        
+                    }
+                    if(a[0].round>b[1].round){
+                        return 1
+                    }else{
+                        return -1
+                    }
+
+                })
+                
+            }
 
             return response.json({
                 message: "Todas as partidas cadastradas",
