@@ -16,7 +16,12 @@ const Teams = new mongoose.Schema({
     initialsTeam: {
         type: String,
         requerid: true,
-        lowercase: true,
+        uppercase: true,
+    },
+    //inicias da equipe
+    flagsInitialsTeam: {
+        type: String,
+        uppercase: true,
     },
     //tipo de equipe time/seleção
     type: {

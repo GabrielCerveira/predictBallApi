@@ -1,22 +1,26 @@
 const Matches = require("../../dataBase/schemas/matches")
+const Teams = require("../../dataBase/schemas/teams")
 const mongoose = require("mongoose")
 
 class matchesController{
     // Create Team
     async create(request, response) {
-        const {idChampionship,round,stage,groupIndentification, groupNumber,idHomeTeam, idAwayTeam, /*homeTeamInitials, awayTeamInitials,*/ status, matchDate, stadium, winner, homeTeamResult, awayTeamResult } = request.body
+        const {idChampionship,round,stage,groupIndentification, groupNumber,idHomeTeam, idAwayTeam, status, matchDate, stadium, winner, homeTeamResult, awayTeamResult } = request.body
         try{    
+            
+            //provisorio
+            const idhome = await Teams.findOne({ surname: idHomeTeam}).exec()
+            const idaway = await Teams.findOne({ surname: idAwayTeam}).exec()
+            
             
             const user = await Matches.create({
                 idChampionship: mongoose.mongo.ObjectId(idChampionship),
-                idHomeTeam : mongoose.mongo.ObjectId(idHomeTeam), 
-                idAwayTeam: mongoose.mongo.ObjectId(idAwayTeam), 
+                idHomeTeam : mongoose.mongo.ObjectId(idhome._id), 
+                idAwayTeam: mongoose.mongo.ObjectId(idaway._id), 
                 round,
                 stage,
                 groupIndentification,
                 groupNumber,
-                //homeTeamInitials, 
-                //awayTeamInitials, 
                 status, 
                 matchDate, 
                 stadium, 
@@ -36,6 +40,46 @@ class matchesController{
             })
         }
     }
+
+    async createArrayMatches(request, response) {
+        console.log(request.body.teste)
+        try{
+            for (let index = 0; index < request.body.teste.length; index++) {
+                    
+                const {idChampionship,round,stage,groupIndentification, groupNumber,idHomeTeam, idAwayTeam, status, matchDate, stadium, winner, homeTeamResult, awayTeamResult } = request.body.teste[index]
+            
+                //provisorio
+                const idhome = await Teams.findOne({ surname: idHomeTeam}).exec()
+                const idaway = await Teams.findOne({ surname: idAwayTeam}).exec()
+
+                await Matches.create({
+                    idChampionship: mongoose.mongo.ObjectId(idChampionship),
+                    idHomeTeam : mongoose.mongo.ObjectId(idhome._id), 
+                    idAwayTeam: mongoose.mongo.ObjectId(idaway._id), 
+                    round,
+                    stage,
+                    groupIndentification,
+                    groupNumber,
+                    status, 
+                    matchDate, 
+                    stadium, 
+                    winner, 
+                    homeTeamResult, 
+                    awayTeamResult
+                })
+            }
+            return response.json({
+                message: "A partida foi cadastrada com sucesso!",
+                   
+            })
+        } catch (error) {
+            return response.status(500).json({
+                error: "Registration failed",
+                message: error
+            })
+        }
+    }  
+    
 
     async aggregateMatches(request, response){
         try {
@@ -74,7 +118,7 @@ class matchesController{
                         }
                     },
                     {
-                        "$sort": { "groupNumber": 1 }
+                        $sort: { groupNumber: 1 }
                     },
                 ],
             )

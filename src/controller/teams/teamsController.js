@@ -1,9 +1,252 @@
 const Teams = require("../../dataBase/schemas/teams")
 
 class teamsController{
+    
+    // Create Team
+    async createAllSelection(request, response) {
+        try {
+            const user = await Teams.create(                
+                {
+                    "team": "Seleção Catari de Futebol",
+                    "surname": "Catar",
+                    "initialsTeam": "CAT",
+                    "flagsInitialsTeam": "QAT",
+                    "type": "selection"
+                },
+                {
+                    "surname": "Equador",
+                    "team": "Seleção Equatoriana de Futebol",
+                    "flagsInitialsTeam": "ECU",
+                    "initialsTeam": "EQU",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Neerlandesa de Futebol",
+                    "surname": "Holanda",
+                    "initialsTeam": "HOL",
+                    "flagsInitialsTeam": "NLD",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Senegalesa de Futebol",
+                    "surname": "Senegal",
+                    "initialsTeam": "SEN",
+                    "flagsInitialsTeam": "SEN",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção de Futebol dos Estados Unidos",
+                    "surname": "Estados Unidos",
+                    "initialsTeam": "EUA",
+                    "flagsInitialsTeam": "USA",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Inglesa de Futebol",
+                    "surname": "Inglaterra",
+                    "initialsTeam": "ING",
+                    "flagsInitialsTeam": "GB-ENG",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Iraniana de Futebol",
+                    "surname": "Irã",
+                    "initialsTeam": "IRA",
+                    "flagsInitialsTeam": "IRN",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Galesa de Futebol",
+                    "surname": "País de Gales",
+                    "initialsTeam": "GAL",
+                    "flagsInitialsTeam": "GB-WLS",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Argentina de Futebol",
+                    "surname": "Argentina",
+                    "initialsTeam": "ARG",
+                    "flagsInitialsTeam": "ARG",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Saudita de Futebol",
+                    "surname": "Arábia Saudita",
+                    "initialsTeam": "ARS",
+                    "flagsInitialsTeam": "SAU",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Mexicana de Futebol",
+                    "surname": "México",
+                    "initialsTeam": "MEX",
+                    "flagsInitialsTeam": "MEX",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Polonesa de Futebol",
+                    "surname": "Polônia",
+                    "initialsTeam": "POL",
+                    "flagsInitialsTeam": "POL",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Francesa de Futebol",
+                    "surname": "França",
+                    "initialsTeam": "FRA",
+                    "flagsInitialsTeam": "FRA",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Dinamarquesa de Futebol",
+                    "surname": "Dinamarca",
+                    "initialsTeam": "DIN",
+                    "flagsInitialsTeam": "DNK",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Tunisiana de Futebol",
+                    "surname": "Tunísia",
+                    "initialsTeam": "TUN",
+                    "flagsInitialsTeam": "TUN",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Australiana de Futebol",
+                    "surname": "Austrália",
+                    "initialsTeam": "AUS",
+                    "flagsInitialsTeam": "AUS",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Espanhola de Futebol",
+                    "surname": "Espanha",
+                    "initialsTeam": "ESP",
+                    "flagsInitialsTeam": "ESP",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Alemã de Futebol",
+                    "surname": "Alemanha",
+                    "initialsTeam": "ALE",
+                    "flagsInitialsTeam": "ALE",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Japonesa de Futebol",
+                    "surname": "Japão",
+                    "initialsTeam": "JAP",
+                    "flagsInitialsTeam": "JPN",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Costarriquenha de Futebol",
+                    "surname": "Costa Rica",
+                    "initialsTeam": "CRC",
+                    "flagsInitialsTeam": "CRI",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Belga de Futebol",
+                    "surname": "Bélgica",
+                    "initialsTeam": "BEL",
+                    "flagsInitialsTeam": "BEL",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Canadense de Futebol",
+                    "surname": "Canadá",
+                    "initialsTeam": "CAN",
+                    "flagsInitialsTeam": "CAN",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Marroquina de Futebol",
+                    "surname": "Marrocos",
+                    "initialsTeam": "MAR",
+                    "flagsInitialsTeam": "MAR",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Croata de Futebol",
+                    "surname": "Croácia",
+                    "initialsTeam": "CRO",
+                    "flagsInitialsTeam": "HRV",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Brasileira de Futebol",
+                    "surname": "Brasil",
+                    "initialsTeam": "BRA",
+                    "flagsInitialsTeam": "BRA",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Sérvia de Futebol",
+                    "surname": "Sérvia",
+                    "initialsTeam": "SER",
+                    "flagsInitialsTeam": "SRB",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Suíça de Futebol",
+                    "surname": "Suíça",
+                    "initialsTeam": "SUI",
+                    "flagsInitialsTeam": "CHE",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Camaronesa de Futebol",
+                    "surname": "Camarões",
+                    "initialsTeam": "CAM",
+                    "flagsInitialsTeam": "CMR",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Portuguesa de Futebol",
+                    "surname": "Portugal",
+                    "initialsTeam": "POR",
+                    "flagsInitialsTeam": "POR",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Ganesa de Futebol",
+                    "surname": "Gana",
+                    "initialsTeam": "GAN",
+                    "flagsInitialsTeam": "GHA",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Uruguaia de Futebol",
+                    "surname": "Uruguai",
+                    "initialsTeam": "URU",
+                    "flagsInitialsTeam": "URY",
+                    "type": "selection"
+                },
+                {
+                    "team": "Seleção Sul-Coreana de Futebol",
+                    "surname": "Coreia do Sul",
+                    "initialsTeam": "COR",
+                    "flagsInitialsTeam": "KOR",
+                    "type": "selection"
+                }
+            )
+            return response.json({
+                message: "As seleçoes foram cadastradas com sucesso!",
+                user
+            })
+
+        } catch (error) {
+            return response.status(500).json({
+                error: "Registration failed",
+                message: error
+            })
+        }
+    }
+    
     // Create Team
     async create(request, response) {
-        const { team, surname, initialsTeam, type } = request.body
+        const { team, surname, initialsTeam, flagsInitialsTeam, type } = request.body
 
         try {
             const teamExists = await Teams.findOne({ team })
@@ -47,7 +290,8 @@ class teamsController{
             const user = await Teams.create({
                 team, 
                 surname, 
-                initialsTeam, 
+                initialsTeam,
+                flagsInitialsTeam,
                 type
             })
 
