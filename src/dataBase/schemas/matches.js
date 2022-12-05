@@ -64,7 +64,7 @@ const Matches = new mongoose.Schema({
     3 = finalizado com empate
     */
     status: {
-        type: String,
+        type: Number,
         requerid: true,
     },
     //data de criação

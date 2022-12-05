@@ -3,6 +3,7 @@ const Teams = require("../../dataBase/schemas/teams")
 const mongoose = require("mongoose")
 
 class matchesController{
+   
     // Create Team
     async create(request, response) {
         const {idChampionship,round,stage,groupIndentification, groupNumber,idHomeTeam, idAwayTeam, status, matchDate, stadium, winner, homeTeamResult, awayTeamResult } = request.body
@@ -41,8 +42,38 @@ class matchesController{
         }
     }
 
+    async addResultMatch(request, response){
+        try {
+            const {_id, homeTeamResult, awayTeamResult} = request.body
+            const winner = homeTeamResult.goals > awayTeamResult.goals ? 
+                homeTeamResult.team :
+                awayTeamResult.goals > homeTeamResult.goals ?
+                    awayTeamResult.team : null
+           
+            const match = await Matches.updateOne({_id},
+                {
+                    homeTeamResult,
+                    awayTeamResult,
+                    status : !winner ? 3 : 2,    
+                })
+            if(winner != null){
+                console.log(winner)
+                await Matches.updateOne({_id},{winner})
+            }
+            return response.json({
+                message: "O resultado foi salvo com sucesso!",
+                match   
+            })  
+        }  catch (error) {
+            return response.status(500).json({
+                error: "Registration failed",
+                message: error
+            })
+        }
+    }
+
+    //Create array Matches
     async createArrayMatches(request, response) {
-        console.log(request.body.teste)
         try{
             for (let index = 0; index < request.body.teste.length; index++) {
                     
