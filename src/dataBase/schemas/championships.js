@@ -32,4 +32,4 @@ const Championships = new mongoose.Schema({
 
 const championships = mongoose.model("Championships", Championships)
 
-module.exports = championships 
+module.exports = championships

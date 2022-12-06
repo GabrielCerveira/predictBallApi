@@ -30,7 +30,7 @@ class matchesController{
                 awayTeamResult
             })
 
-            return response.json({
+            return response.status(200).json({
                 message: "A partida foi cadastrada com sucesso!",
                 user
             })
@@ -43,8 +43,33 @@ class matchesController{
     }
 
     async addResultMatch(request, response){
+        const _id = request.params.id
+        const {homeTeamResult, awayTeamResult} = request.body
         try {
-            const {_id, homeTeamResult, awayTeamResult} = request.body
+            
+            const verifyMatch = await Matches.findById({_id})
+
+            if(!verifyMatch){
+                return response.status(422).json({
+                    erro: "Erro de validação",
+                    message: "A partida não foi encontrada"
+                })
+            }
+
+            if(!homeTeamResult){
+                return response.status(422).json({
+                    error: "Erro de validação",
+                    message: "É obrigatório informar os gols do time visitante",
+                })
+            }
+
+            if(!awayTeamResult){
+                return response.status(422).json({
+                    error: "Erro de validação",
+                    message: "É obrigatório informar os gols do time da casa",
+                })
+            }
+
             const winner = homeTeamResult.goals > awayTeamResult.goals ? 
                 homeTeamResult.team :
                 awayTeamResult.goals > homeTeamResult.goals ?
@@ -60,7 +85,7 @@ class matchesController{
                 console.log(winner)
                 await Matches.updateOne({_id},{winner})
             }
-            return response.json({
+            return response.status(200).json({
                 message: "O resultado foi salvo com sucesso!",
                 match   
             })  
@@ -99,7 +124,7 @@ class matchesController{
                     awayTeamResult
                 })
             }
-            return response.json({
+            return response.status(200).json({
                 message: "A partida foi cadastrada com sucesso!",
                    
             })
@@ -193,7 +218,7 @@ class matchesController{
                 
             }
 
-            return response.json({
+            return response.status(200).json({
                 message: "Todas as partidas cadastradas",
                 retorno
             })

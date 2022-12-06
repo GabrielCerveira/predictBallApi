@@ -1,4 +1,3 @@
-const championships = require("../../dataBase/schemas/championships")
 const Championship =  require("../../dataBase/schemas/championships")
 //const mongoose = require("mongoose")
 
@@ -100,7 +99,7 @@ class championshipsController{
             dateFinish
         }
 
-        const championshipExists = await championships.findOne({ _id: id })
+        const championshipExists = await Championship.findOne({ _id: id })
 
         if (!championshipExists) {
             return response.status(422).json({
@@ -111,7 +110,7 @@ class championshipsController{
 
         try {
 
-            await championships.updateOne({ _id: id }, championshipUpdate)
+            await Championship.updateOne({ _id: id }, championshipUpdate)
 
             return response.status(200).json({
                 message: "Campeonato atualizado com sucesso",
