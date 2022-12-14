@@ -2,7 +2,7 @@ const Teams = require("../../dataBase/schemas/teams")
 
 class teamsController{
     
-    // Create Team
+    // Cria todas as seleções
     async createAllSelection(request, response) {
         try {
             const user = await Teams.create(                
@@ -295,9 +295,27 @@ class teamsController{
                 type
             })
 
-            return response.json({
+            return response.status(200).json({
                 message: "O time foi cadastrado com sucesso!",
                 user
+            })
+        } catch (error) {
+            return response.status(500).json({
+                error: "Registration failed",
+                message: error
+            })
+        }
+    }
+
+    //Read all teams
+    async showTeams(request, response){
+        try {
+            
+            const teams = await Teams.find()
+
+            return response.status(200).json({
+                message: "O time foi cadastrado com sucesso!",
+                teams
             })
         } catch (error) {
             return response.status(500).json({

@@ -10,6 +10,9 @@ const routes = Router()
 //Rota para criar um time
 routes.post("/teams/create", teamsController.create)
 
+//Rota visualizar todos os times
+routes.get("/teams", teamsController.showTeams)
+
 //Rota para criar todas as seleçoes
 routes.get("/teams/createAllSelection", teamsController.createAllSelection)
 
