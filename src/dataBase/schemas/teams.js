@@ -18,7 +18,7 @@ const Teams = new mongoose.Schema({
         requerid: true,
         uppercase: true,
     },
-    //inicias da equipe
+    //inicias da equipe para obter a bandeira da mesma
     flagsInitialsTeam: {
         type: String,
         uppercase: true,

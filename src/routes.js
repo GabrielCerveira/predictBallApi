@@ -10,11 +10,17 @@ const routes = Router()
 //Rota para criar um time
 routes.post("/teams/create", teamsController.create)
 
+//Rota para criar todas as seleçoes
+routes.get("/teams/createAllSelection", teamsController.createAllSelection)
+
 //Rota visualizar todos os times
 routes.get("/teams", teamsController.showTeams)
 
-//Rota para criar todas as seleçoes
-routes.get("/teams/createAllSelection", teamsController.createAllSelection)
+//Rota para atuaalizar um time
+routes.patch("teams/update/:id", teamsController.updateByID)
+
+//Rota para deletar um time
+routes.delete("/teams/delete/:id", teamsController.deleteByID)
 
 //Rota para criar uma partida
 routes.post("/matches/create", matchesController.create)

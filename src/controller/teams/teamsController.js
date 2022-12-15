@@ -244,7 +244,7 @@ class teamsController{
         }
     }
     
-    // Create Team
+    // Cria um time 
     async create(request, response) {
         const { team, surname, initialsTeam, flagsInitialsTeam, type } = request.body
 
@@ -253,35 +253,35 @@ class teamsController{
 
             if (!team) {
                 return response.status(422).json({
-                    error: "Fez merda",
+                    error: "Erro de validação",
                     message: "O nome do time é obrigatorio!",
                 })
             }
 
             if (!surname) {
                 return response.status(422).json({
-                    error: "Fez merda",
+                    error: "Erro de validação",
                     message: "O apelido do time é obrigatorio!",
                 })
             }
 
             if (teamExists) {
                 return response.status(400).json({
-                    error: "Fez merda",
+                    error: "Erro de validação",
                     message: "O time já  foi cadastrado!",
                 })
             }
 
             if (!initialsTeam) {
                 return response.status(422).json({
-                    error: "Fez merda",
+                    error: "Erro de validação",
                     message: "As inicias do time são obrigatorias!",
                 })
             }
 
             if (!type) {
                 return response.status(422).json({
-                    error: "Fez merda",
+                    error: "Erro de validação",
                     message: "O tipo da equipe é obrigatoria!",
                 })
             }
@@ -307,7 +307,7 @@ class teamsController{
         }
     }
 
-    //Read all teams
+    //Exibi todas as equipes
     async showTeams(request, response){
         try {
             
@@ -318,6 +318,97 @@ class teamsController{
                 teams
             })
         } catch (error) {
+            return response.status(500).json({
+                error: "Registration failed",
+                message: error
+            })
+        }
+    }
+
+    //Atualiza um time por id
+    async updateByID(request, response){
+        const id = request.params._id
+        const {team, surname, initialsTeam, type, flagsInitialsTeam} = request.body
+        try {
+            const verifyTeamByID = await Teams.findById({_id : id}) 
+
+            if (!verifyTeamByID){
+                return response.status(422).json({
+                    error: "Erro!",
+                    message: "O time não foi encontrado!"
+                })
+            }
+
+            if (!team) {
+                return response.status(422).json({
+                    error: "Erro de validação",
+                    message: "O nome do time é obrigatorio!",
+                })
+            }
+
+            if (!surname) {
+                return response.status(422).json({
+                    error: "Erro de validação",
+                    message: "O apelido do time é obrigatorio!",
+                })
+            }
+
+            if (!initialsTeam) {
+                return response.status(422).json({
+                    error: "Erro de validação",
+                    message: "As inicias do time são obrigatorias!",
+                })
+            }
+
+            if (!type) {
+                return response.status(422).json({
+                    error: "Erro de validação",
+                    message: "O tipo da equipe é obrigatoria!",
+                })
+            }
+
+            const teams = await Teams.updateOne({_id:id},{
+                team, 
+                surname, 
+                initialsTeam,
+                flagsInitialsTeam,
+                type
+            })
+
+            return response.status(200).json({
+                message: "O time foi atualizada com sucesso!",
+                teams
+            })
+
+        } catch (error) {
+            return response.status(500).json({
+                error: "Registration failed",
+                message: error
+            })
+        }
+    }
+
+    //Deleta uma equipe por id
+    async deleteByID(request, response){
+        const _id =  request.params.id
+        try {
+            const verifyId = await Teams.findById({_id})
+            
+            if(!verifyId){
+                return response.status(422).json({
+                    error: "Erro!",
+                    message: "O time não foi encontrado!"
+                })
+            }
+
+            const bet = await Teams.deleteOne({_id})
+
+            return response.status(200).json({
+                message: "O time foi deletado com sucesso!",
+                bet
+            })            
+
+        }  catch (error) {
             return response.status(500).json({
                 error: "Registration failed",
                 message: error
