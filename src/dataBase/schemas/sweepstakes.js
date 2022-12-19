@@ -33,7 +33,8 @@ const Sweepstakes = new mongoose.Schema({
     },
     //Valor para entrar no bolão
     valueToBet: {
-        type: Number
+        type: Number,
+        default: 0
     },
     //Valor do prêmio é calculdo proporcionalmente a quantidade de participantes
     setProportionalValue:{
@@ -62,6 +63,16 @@ const Sweepstakes = new mongoose.Schema({
     setWeightForMatch:{
         type: mongoose.Types.Decimal128,
         default: 0.05
+    },
+
+    //informa quantos usuários estão participando do bolão
+    usersInSweepstakes: {
+        type: Number
+    },
+
+    //informa quantos usuários estão participando do bolão
+    totalAmountBet: {
+        type: mongoose.Types.Decimal128,
     },
 
     //data de criação
