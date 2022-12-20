@@ -37,7 +37,7 @@ const Sweepstakes = new mongoose.Schema({
         default: 0
     },
     //Valor do prêmio é calculdo proporcionalmente a quantidade de participantes
-    setProportionalValue:{
+    setProportionalAwardValue:{
         type: Boolean,
         requerid: true
     },
@@ -61,7 +61,7 @@ const Sweepstakes = new mongoose.Schema({
     
     // define qual será a diferença dos pesos entre cada rodada
     setWeightForMatch:{
-        type: mongoose.Types.Decimal128,
+        type: Number,
         default: 0.05
     },
 
@@ -70,9 +70,9 @@ const Sweepstakes = new mongoose.Schema({
         type: Number
     },
 
-    //informa quantos usuários estão participando do bolão
+    //informa o total que foi arrecadado
     totalAmountBet: {
-        type: mongoose.Types.Decimal128,
+        type: Number,
     },
 
     //data de criação

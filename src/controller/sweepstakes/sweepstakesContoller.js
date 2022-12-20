@@ -12,7 +12,7 @@ class sweepstakesController{
             addScore,
             closeBetHours,
             valueToBet,
-            setProportionalValue,
+            setProportionalAwardValue,
             valueToAward,
             enterPoolAfterStarting,
             setDifferentWeightMatch,
@@ -20,11 +20,15 @@ class sweepstakesController{
         } = request.body 
         try {
             
-            if(!giveScoreForWinner){
+            if(typeof giveScoreForWinner === "undefined"){
                 return response.status(422).json({
                     error: "Erro de validação",
                     message: "É obrigatório informar se será concedido pontos ao usuário que acertar o vencedor!",
                 })
+            }
+
+            if(giveScoreForWinner === false){
+                scoreForWinner = 0
             }
 
             if(giveScoreForWinner === true){
@@ -43,7 +47,7 @@ class sweepstakesController{
                 })
             }
 
-            if(!addScore){
+            if(typeof addScore === "undefined"){
                 return response.status(422).json({
                     error: "Erro de validação",
                     message: "É obrigatório informar os pontos do acerto do resultado exato serão somados ao de acertar o vencedor!",
@@ -57,33 +61,34 @@ class sweepstakesController{
                 })
             }
 
-            if(closeBetHours >= 1 && closeBetHours <= 72){
+
+            if(closeBetHours < 1 || closeBetHours > 72){
                 return response.status(422).json({
                     error: "Erro de validação",
                     message: "É obrigatório informar um valor dentro do périodo  de 1-72 horas",
                 })
             }
-            
-            if(!valueToBet || valueToBet >= 0){
+
+            if(!valueToBet || valueToBet <= 0){
                 return response.status(422).json({
                     error: "Erro de validação",
                     message: "É obrigatório informar um valor para entrar na aposta válido!",
                 })
             }
 
-            if(!setProportionalValue){
+            if(typeof setProportionalAwardValue === "undefined"){
                 return response.status(422).json({
                     error: "Erro de validação",
                     message: "É obrigatório informar se o prêmio será calculado proporcionalmente ao valor que foi apostado!",
                 })
             }
             
-            if(setProportionalValue === true){
+            if(setProportionalAwardValue === true){
                 valueToAward = 0
             }
             
-            if(setProportionalValue === false){
-                if(!valueToAward || valueToAward >= 0){
+            if(setProportionalAwardValue === false){
+                if(!valueToAward || valueToAward < 0){
                     return response.status(422).json({
                         error: "Erro de validação",
                         message: "É obrigatório informar o valor do prêmio!",
@@ -91,7 +96,14 @@ class sweepstakesController{
                 }
             }
 
-            if(!setDifferentWeightMatch){
+            if(typeof enterPoolAfterStarting === "undefined"){
+                return response.status(422).json({
+                    error: "Erro de validação",
+                    message: "É obrigatório informar se é permitido entrar no bolão após o inicio!",
+                })
+            }
+            
+            if(typeof setDifferentWeightMatch === "undefined"){
                 return response.status(422).json({
                     error: "Erro de validação",
                     message: "É obrigatório informar se as partidas terão pesos diferentes para o bolão!",
@@ -115,7 +127,7 @@ class sweepstakesController{
                 addScore,
                 closeBetHours,
                 valueToBet,
-                setProportionalValue,
+                setProportionalAwardValue,
                 valueToAward,
                 enterPoolAfterStarting,
                 setDifferentWeightMatch,

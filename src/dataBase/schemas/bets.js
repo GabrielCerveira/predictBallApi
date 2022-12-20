@@ -11,6 +11,11 @@ const Bets = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         requerid: true,
     },
+    //id do bolão
+    sweepstakes: {
+        type: mongoose.Types.ObjectId,
+        requerid: true,
+    },
     //Bet gols time visitante
     awayGoals:{
         type: Number,
@@ -31,6 +36,9 @@ const Bets = new mongoose.Schema({
     },
     isWinner:{
         type: Boolean,
+    },
+    pointsBet:{
+        type: Number
     }
 })
 

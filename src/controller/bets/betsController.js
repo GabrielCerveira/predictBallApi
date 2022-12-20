@@ -1,4 +1,5 @@
 const Bets = require("../../dataBase/schemas/bets")
+const Sweepstakes = require("../../dataBase/schemas/sweepstakes")
 const Matches = require("../../dataBase/schemas/matches")
 const mongoose = require("mongoose")
 
@@ -6,7 +7,7 @@ class betsController{
     
     //Cria uma aposta
     async create(request, response){
-        const {idMatch, punter, awayGoals, homeGoals} = request.body
+        const {idMatch, punter, awayGoals, homeGoals, sweepstakes} = request.body
 
         try{
             if(!idMatch){
@@ -20,6 +21,13 @@ class betsController{
                 return response.status(422).json({
                     error: "Erro de validação",
                     message: "É obrigatório informar o apostador",
+                })
+            }
+
+            if(!sweepstakes){
+                return response.status(422).json({
+                    error: "Erro de validação",
+                    message: "É obrigatório informar o bolão que está aposta faz parte",
                 })
             }
 
@@ -40,6 +48,7 @@ class betsController{
             const bet = await Bets.create({
                 idMatch:  mongoose.mongo.ObjectId(idMatch),
                 punter: mongoose.mongo.ObjectId(idMatch),
+                sweepstakes: mongoose.mongo.ObjectId(sweepstakes),
                 awayGoals,
                 homeGoals,
                 status : 0,
@@ -77,8 +86,10 @@ class betsController{
     //Exibir todas as apostas de determinado usuário(punter) e bolão
     async findByIDUserAndSweepstakes(request, response){
         const punter = request.params.punter
+        const sweepstakes = request.params.sweepstakes
+
         try{
-            const bet = await Bets.find({punter})
+            const bet = await Bets.find({punter , sweepstakes})
             response.status(200).json({
                 message: "Todas as apostas cadastradas",
                 bet
@@ -202,13 +213,18 @@ class betsController{
                 })
             }
 
+            const sweepstakes = await Sweepstakes.findById({_id: bet.sweepstakes})
+
             if(match.homeTeamResult.goals === bet.homeGoals && match.awayTeamResult.goals === bet.awayGoals){
+                const pointsBet = sweepstakes.scoreForResultExact * (sweepstakes.setDifferentWeightMatch === true ?
+                    sweepstakes.setWeightForMatch * match.round : 1)
                 await Bets.updateOne({_id},{
-                    status: 1,
-                    isWinner: true
+                    status: 0,
+                    isWinner: true,
+                    pointsBet
                 })
                 return response.status(200).json({
-                    message: "A aposta foi atualizada com sucesso!"           
+                    message: "A aposta foi atualizada com sucesso!" 
                 }) 
             }
 

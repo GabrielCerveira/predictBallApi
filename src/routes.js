@@ -3,6 +3,7 @@ const teamsController = require("./controller/teams/teamsController")
 const matchesController = require("./controller/matches/matchesController")
 const championshipsController = require("./controller/championships/championshipsController")
 const betsController = require("./controller/bets/betsController")
+const sweepstakesController = require("./controller/sweepstakes/sweepstakesContoller")
 
 
 const routes = Router()
@@ -46,6 +47,9 @@ routes.patch("/championships/update/:id", championshipsController.updateChampion
 //Rota para criar uma aposta 
 routes.post("/bet/create", betsController.create)
 
+//Rota para criar um bolão
+routes.post("/sweepstakes/create", sweepstakesController.create)
+
 //Rota para atualizar uma aposta 
 routes.patch("/bet/update/:id", betsController.updateByID)
 
@@ -59,7 +63,6 @@ routes.post("/bet/set/winner/:id", betsController.verifyBetByID)
 routes.get("/bets", betsController.find)
 
 //Rota para exiber todas as apostas de um usuário e de um bolão 
-//add :idSweepstakes/
-routes.get("/bets/:punter", betsController.findByIDUserAndSweepstakes)
+routes.get("/bets/:punter/:sweepstakes", betsController.findByIDUserAndSweepstakes)
 
 module.exports = routes
