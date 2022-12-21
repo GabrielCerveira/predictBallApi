@@ -215,9 +215,10 @@ class betsController{
 
             const sweepstakes = await Sweepstakes.findById({_id: bet.sweepstakes})
 
+            // define pontuação do resultado exato
             if(match.homeTeamResult.goals === bet.homeGoals && match.awayTeamResult.goals === bet.awayGoals){
-                const pointsBet = sweepstakes.scoreForResultExact * (sweepstakes.setDifferentWeightMatch === true ?
-                    sweepstakes.setWeightForMatch * match.round : 1)
+                const pointsBet = sweepstakes.scoreForResultExact * (1 + (sweepstakes.setDifferentWeightMatch === true ?
+                    sweepstakes.setWeightForMatch * match.round : 0))
                 await Bets.updateOne({_id},{
                     status: 0,
                     isWinner: true,
@@ -228,9 +229,48 @@ class betsController{
                 }) 
             }
 
+            // define pontuação do empate
+            if(bet.homeGoals === bet.awayGoals && match.status === 3){
+                await Bets.updateOne({_id},{
+                    status: 1,
+                    isWinner: true,
+                    pointsBet: sweepstakes.scoreForWinner
+                })
+                return response.status(200).json({
+                    message: "A aposta foi atualizada com sucesso!" 
+                }) 
+            }
+
+            // define pontuação por acertar o vencedor
+            const verifyWinner = async () => {
+                if((bet.homeGoals > bet.awayGoals || bet.homeGoals < bet.awayGoals) && match.status === 2){
+                    if(bet.homeGoals > bet.awayGoals && match.homeTeamResult > match.awayTeamResult){
+                        return true
+                    }
+    
+                    if(bet.homeGoals < bet.awayGoals && match.homeTeamResult < match.awayTeamResult){
+                        return true
+                    }
+                    return false
+                }
+            } 
+            
+            if (verifyWinner){
+                await Bets.updateOne({_id},{
+                    status: 1,
+                    isWinner: true,
+                    pointsBet: sweepstakes.scoreForWinner
+                })
+                return response.status(200).json({
+                    message: "A aposta foi atualizada com sucesso!" 
+                })  
+            }
+
+            // define se perdeu a aposta
             await Bets.updateOne({_id},{
                 status: 1,
-                isWinner: false
+                isWinner: false,
+                pointsBet: 0
             })
 
             return response.status(200).json({
