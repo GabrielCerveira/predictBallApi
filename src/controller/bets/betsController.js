@@ -182,6 +182,7 @@ class betsController{
         const _id = request.params.id
         try {
             const bet = await Bets.findById(_id)
+           
 
             if(!bet){
                 return response.status(422).json({
@@ -198,11 +199,12 @@ class betsController{
             }
 
             const match =  await Matches.findById(bet.idMatch)
-
+            const sweepstakes = await Sweepstakes.findById({_id: bet.sweepstakes})
+            
             if(!match){
                 return response.status(422).json({
                     error: "Erro de validação",
-                    message: "A partida realacionada a aposta não foi localizada!"
+                    message: "A partida relacionada a aposta não foi localizada!"
                 })
             }
 
@@ -213,32 +215,45 @@ class betsController{
                 })
             }
 
-            const sweepstakes = await Sweepstakes.findById({_id: bet.sweepstakes})
+
+            if(!sweepstakes){
+                return response.status(422).json({
+                    error: "Erro de validação",
+                    message: "O bolão não foi localizado!"
+                })
+            }
+           
+
+            const handleSetPontuation = async (isWinner = Boolean , pointsBet ) =>{
+               
+                if(sweepstakes.addScore){
+                    pointsBet += bet.pointsBet
+                }
+                
+                if(!sweepstakes.addScore && pointsBet < bet.pointsBet){
+                    pointsBet = bet.pointsBet
+                }
+                
+                await Bets.updateOne({_id},{
+                    status : 1,
+                    isWinner,
+                    pointsBet
+                })
+                
+                bet.pointsBet = pointsBet
+                bet.status = 1
+            }
 
             // define pontuação do resultado exato
             if(match.homeTeamResult.goals === bet.homeGoals && match.awayTeamResult.goals === bet.awayGoals){
                 const pointsBet = sweepstakes.scoreForResultExact * (1 + (sweepstakes.setDifferentWeightMatch === true ?
                     sweepstakes.setWeightForMatch * match.round : 0))
-                await Bets.updateOne({_id},{
-                    status: 0,
-                    isWinner: true,
-                    pointsBet
-                })
-                return response.status(200).json({
-                    message: "A aposta foi atualizada com sucesso!" 
-                }) 
+                await handleSetPontuation(true, pointsBet)
             }
 
             // define pontuação do empate
             if(bet.homeGoals === bet.awayGoals && match.status === 3){
-                await Bets.updateOne({_id},{
-                    status: 1,
-                    isWinner: true,
-                    pointsBet: sweepstakes.scoreForWinner
-                })
-                return response.status(200).json({
-                    message: "A aposta foi atualizada com sucesso!" 
-                }) 
+                await handleSetPontuation(true, sweepstakes.scoreForWinner)
             }
 
             // define pontuação por acertar o vencedor
@@ -256,22 +271,13 @@ class betsController{
             } 
             
             if (verifyWinner){
-                await Bets.updateOne({_id},{
-                    status: 1,
-                    isWinner: true,
-                    pointsBet: sweepstakes.scoreForWinner
-                })
-                return response.status(200).json({
-                    message: "A aposta foi atualizada com sucesso!" 
-                })  
+                await handleSetPontuation(true, sweepstakes.scoreForWinner) 
             }
 
             // define se perdeu a aposta
-            await Bets.updateOne({_id},{
-                status: 1,
-                isWinner: false,
-                pointsBet: 0
-            })
+            if(bet.status === 0){
+                await handleSetPontuation(false, 0) 
+            }
 
             return response.status(200).json({
                 message: "A aposta foi atualizada com sucesso!"           
