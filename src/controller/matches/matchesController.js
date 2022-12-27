@@ -1,5 +1,5 @@
-const Matches = require("../../dataBase/schemas/matches")
-const Teams = require("../../dataBase/schemas/teams")
+const Matches = require("../../dataBase/schemas/Matches")
+const Teams = require("../../dataBase/schemas/Teams")
 const mongoose = require("mongoose")
 
 class matchesController{

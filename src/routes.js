@@ -4,9 +4,16 @@ const matchesController = require("./controller/matches/matchesController")
 const championshipsController = require("./controller/championships/championshipsController")
 const betsController = require("./controller/bets/betsController")
 const sweepstakesController = require("./controller/sweepstakes/sweepstakesContoller")
+const usersController = require("./controller/users/usersController")
 
 
 const routes = Router()
+
+//Rota para criar um usuário
+routes.post("/user/register", usersController.create)
+
+//Rota para gerar um token de autentificação
+routes.post("/user/auth", usersController.auth)
 
 //Rota para criar um time
 routes.post("/teams/create", teamsController.create)

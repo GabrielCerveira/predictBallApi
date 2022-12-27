@@ -1,6 +1,6 @@
-const Bets = require("../../dataBase/schemas/bets")
-const Sweepstakes = require("../../dataBase/schemas/sweepstakes")
-const Matches = require("../../dataBase/schemas/matches")
+const Bets = require("../../dataBase/schemas/Bets")
+const Sweepstakes = require("../../dataBase/schemas/Sweepstakes")
+const Matches = require("../../dataBase/schemas/Matches")
 const mongoose = require("mongoose")
 
 class betsController{

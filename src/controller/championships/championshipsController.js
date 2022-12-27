@@ -1,4 +1,4 @@
-const Championship =  require("../../dataBase/schemas/championships")
+const Championship =  require("../../dataBase/schemas/Championships")
 //const mongoose = require("mongoose")
 
 class championshipsController{

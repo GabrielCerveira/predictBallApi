@@ -1,4 +1,4 @@
-const Teams = require("../../dataBase/schemas/teams")
+const Teams = require("../../dataBase/schemas/Teams")
 
 class teamsController{
     

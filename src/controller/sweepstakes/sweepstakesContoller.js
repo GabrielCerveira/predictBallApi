@@ -1,4 +1,4 @@
-const Sweepstakes = require("../../dataBase/schemas/sweepstakes")
+const Sweepstakes = require("../../dataBase/schemas/Sweepstakes")
 
 class sweepstakesController{
     
