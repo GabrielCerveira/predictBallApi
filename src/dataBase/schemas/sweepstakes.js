@@ -42,7 +42,19 @@ const Sweepstakes = new mongoose.Schema({
         requerid: true
     },
     
-    //Definir valor fixo do prêmio do bolão
+    //define se o proprietario recebera uma porcentagem do valor arrecadado
+    passedOnOwner: {
+        type: Boolean,
+        requerid: true
+    },
+    
+    //porcentagem repassada para o criador do bolão
+    feePassedOnOwner:{
+        type: Number,
+        default: 0
+    },
+
+    //Definir valor do prêmio do bolão pode ser calculado automaticamente
     valueToAward: {
         type: Number
     },

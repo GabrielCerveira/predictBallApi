@@ -44,14 +44,16 @@ const User = new mongoose.Schema({
     //CPF
     cpf: {
         type: String,
-       
         unique: true,
     },
     //Saldo
     balance: {
-        type: String,
-       
+        type: Number,
     },
+    //Bolões que o usuário participa
+    sweepstakesUser: {
+        type: Array,
+    }
 })
 
 const user = mongoose.model("User", User)

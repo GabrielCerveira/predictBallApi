@@ -5,6 +5,7 @@ const championshipsController = require("./controller/championships/championship
 const betsController = require("./controller/bets/betsController")
 const sweepstakesController = require("./controller/sweepstakes/sweepstakesContoller")
 const usersController = require("./controller/users/usersController")
+const middlewares = require("./middlewares/auth")
 
 
 const routes = Router()
@@ -14,6 +15,15 @@ routes.post("/user/register", usersController.create)
 
 //Rota para gerar um token de autentificação
 routes.post("/user/auth", usersController.auth)
+
+//verifica se o token é valido
+routes.use(middlewares.auth)
+
+//Rota para adicionar saldo a conta do usuário
+routes.patch("/user/addBalance/:id", usersController.addBalanceUser)
+
+//Rota para adicionar saldo a conta do usuário
+routes.patch("/user/addSweepstake", usersController.addSweepstake)
 
 //Rota para criar um time
 routes.post("/teams/create", teamsController.create)
@@ -56,6 +66,9 @@ routes.post("/bet/create", betsController.create)
 
 //Rota para criar um bolão
 routes.post("/sweepstakes/create", sweepstakesController.create)
+
+//Rota para atualizar o prêmio do bolão de forma automatica
+routes.post("/sweepstakes/updateValueToAward/:id", sweepstakesController.updateValueToAward)
 
 //Rota para atualizar uma aposta 
 routes.patch("/bet/update/:id", betsController.updateByID)

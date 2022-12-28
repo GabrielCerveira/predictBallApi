@@ -16,7 +16,9 @@ class sweepstakesController{
             valueToAward,
             enterPoolAfterStarting,
             setDifferentWeightMatch,
-            setWeightForMatch
+            setWeightForMatch,
+            passedOnOwner,
+            feePassedOnOwner
         } = request.body 
         try {
             
@@ -118,6 +120,22 @@ class sweepstakesController{
                     })
                 }
             }
+
+            if(typeof passedOnOwner === "undefined"){
+                return response.status(422).json({
+                    error: "Erro de validação",
+                    message: "É obrigatório informar se o criador do bolão irá receber uma taxa do valor arrecado!",
+                })
+            }
+
+            if(passedOnOwner === true){
+                if(!feePassedOnOwner){
+                    return response.status(422).json({
+                        error: "Erro de validação",
+                        message: "É obrigatório informar a taxa que sera repassada ao dono do bolão!",
+                    })
+                }
+            }
             
             const sweepstakes = await Sweepstakes.create({
                 name,
@@ -131,7 +149,9 @@ class sweepstakesController{
                 valueToAward,
                 enterPoolAfterStarting,
                 setDifferentWeightMatch,
-                setWeightForMatch
+                setWeightForMatch,
+                passedOnOwner,
+                feePassedOnOwner
             })
 
             return response.status(200).json({
@@ -148,16 +168,50 @@ class sweepstakesController{
 
     //Atualiza o valor total do prêmio caso a opção "setProportionalValue" = true
     async updateValueToAward (request, response){
-        const { id } = request.params.id
-        let usersInSweepstakes, totalAmountBet, valueToAward
+        const id = request.params.id
         try {
+            if(!id){
+                return response.status(404).json({
+                    error: "Erro de validação",
+                    message: "É obrigatório informar o bolão!",
+                })
+            }
+            const checkSweepstakes = await Sweepstakes.findById({_id: id})
+
+            if(!checkSweepstakes){
+                return response.status(422).json({
+                    error: "Erro de validação",
+                    message: "O bolão não foi encontrado!"
+                })
+            }
             
-            
+            if(checkSweepstakes.setProportionalAwardValue === false){
+                return response.status(404).json({
+                    error: "Erro de validação",
+                    message: "Este bolão não tem o valor do prêmio calculado automaticamente!",
+                })
+            }
+
+            if(typeof checkSweepstakes.totalAmountBet === "undefined"||checkSweepstakes.totalAmountBet <= 0){
+                return response.status(404).json({
+                    error: "Erro de validação",
+                    message: "Está bolão ainda não arredou nenhum valor!",
+                })
+            }
+
+            let fee = 0
+            console.log(checkSweepstakes)
+            if(checkSweepstakes.passedOnOwner === true){
+                fee = checkSweepstakes.feePassedOnOwner/100 
+            }
+            console.log( fee)
+
+
+            const valueToAward = checkSweepstakes.totalAmountBet - checkSweepstakes.totalAmountBet * fee
+
             const updateValueToAward = await Sweepstakes.updateOne({
                 _id : id
             },{
-                usersInSweepstakes,
-                totalAmountBet,
                 valueToAward
             })
             
