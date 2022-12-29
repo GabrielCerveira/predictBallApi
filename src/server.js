@@ -1,5 +1,6 @@
 const express = require("express")
 const routes = require("./routes")
+const puppeteer = require("./utils/scraping")
 const mongoose = require("mongoose")
 
 const app = express()
@@ -20,5 +21,6 @@ mongoose
             console.log("server is listing")
         })
         mongoose.Promise = global.Promise
+        puppeteer.scraping()
     })
     .catch((err) => console.log(err))
