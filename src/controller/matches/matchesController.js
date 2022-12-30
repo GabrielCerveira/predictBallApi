@@ -9,15 +9,11 @@ class matchesController{
         const {idChampionship,round,stage,groupIndentification, groupNumber,idHomeTeam, idAwayTeam, status, matchDate, stadium, winner, homeTeamResult, awayTeamResult } = request.body
         try{    
             
-            //provisorio
-            const idhome = await Teams.findOne({ surname: idHomeTeam}).exec()
-            const idaway = await Teams.findOne({ surname: idAwayTeam}).exec()
-            
             
             const user = await Matches.create({
                 idChampionship: mongoose.mongo.ObjectId(idChampionship),
-                idHomeTeam : mongoose.mongo.ObjectId(idhome._id), 
-                idAwayTeam: mongoose.mongo.ObjectId(idaway._id), 
+                idHomeTeam : mongoose.mongo.ObjectId(idHomeTeam), 
+                idAwayTeam: mongoose.mongo.ObjectId(idAwayTeam), 
                 round,
                 stage,
                 groupIndentification,

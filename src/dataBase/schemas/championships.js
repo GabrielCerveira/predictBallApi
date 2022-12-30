@@ -5,13 +5,17 @@ const Championships = new mongoose.Schema({
     name:{
         type: String,
         requerid: true,
-        lowercase: true,
+    },
+    //Nome do campeonato que o ge reconhece
+    nickname:{
+        type: String,
+        requerid: true,
     },
     //Federação que organiza o campeonato. Ex:. CBF
     idOrganizer:{
         //type: mongoose.Types.ObjectId,
         type: String,
-        requerid: true
+        requerid: false
     },
     //Temporada que o campeonato está sendo disputado 21/22 ou 22
     season:{

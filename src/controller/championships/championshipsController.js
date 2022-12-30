@@ -1,9 +1,9 @@
-const Championship =  require("../../dataBase/schemas/Championships")
-//const mongoose = require("mongoose")
+const Championship = require("../../dataBase/schemas/Championships")
+const mongoose = require("mongoose")
 
 class championshipsController{
     async create(request, response){
-        const {name,idOrganizer,season,dateStarted,dateFinish} = request.body
+        const {name,idOrganizer,season,dateStarted,dateFinish,nickname} = request.body
         try {
             
             if(!name){
@@ -12,13 +12,15 @@ class championshipsController{
                     message: "O nome do campeonato é obrigatório!",
                 })
             }
-
+            
+            /* 
             if(!idOrganizer){
                 return response.status(422).json({
                     error: "Erro de validação",
                     message: "A organização é obrigatória!",
                 })
             }
+            */
             
             if(!season){
                 return response.status(422).json({
@@ -50,8 +52,8 @@ class championshipsController{
 
             const championships = Championship.create({
                 name,
-                //idOrganizer: mongoose.mongo.ObjectId(idOrganizer),
-                idOrganizer,
+                nickname: !nickname ? name: nickname,
+                idOrganizer: mongoose.mongo.ObjectId(idOrganizer),
                 season,
                 dateStarted,
                 dateFinish

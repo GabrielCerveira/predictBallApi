@@ -11,6 +11,7 @@ const Teams = new mongoose.Schema({
     surname:{
         type: String,
         requerid: true,
+        unique: true,
     },
     //inicias da equipe
     initialsTeam: {
