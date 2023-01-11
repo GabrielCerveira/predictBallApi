@@ -52,6 +52,9 @@ routes.patch("/matches/addResultMatch/:id", matchesController.addResultMatch)
 //Rota para visualizar todas as partidas
 routes.get("/matches/", matchesController.aggregateMatches)
 
+//Rota para visualizar todas as partidas
+routes.get("/match/", matchesController.findMatch)
+
 //Rota para criar um campeonato
 routes.post("/championships/create", championshipsController.create)
 

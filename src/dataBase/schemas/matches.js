@@ -4,6 +4,7 @@ const Matches = new mongoose.Schema({
     //id do campeonato
     idChampionship: {
         type: mongoose.Types.ObjectId,
+        ref: 'Championships',
         requerid: true,
     },
     //Rodada em que a partida será disputada
@@ -36,11 +37,13 @@ const Matches = new mongoose.Schema({
     //id da equipe da casa
     idHomeTeam: {
         type: mongoose.Types.ObjectId,
+        ref: 'Teams',
         requerid: true,
     },
     //id da equipe visitante
     idAwayTeam:{
         type: mongoose.Types.ObjectId,
+        ref: 'Teams',
         requerid: true,     
     },
     /*

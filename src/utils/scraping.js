@@ -1,8 +1,8 @@
 const Championship =  require("../dataBase/schemas/Championships")
-const team = require("./teamsUtils")
+const team = require("../dataBase/queries/teamsQueries")
 const puppeter = require("puppeteer")
 const moment = require("moment")
-const teamsUtils = require("./teamsUtils")
+const teamsUtils = require("../dataBase/queries/teamsQueries")
 
 module.exports = {
     async scraping(){
@@ -88,7 +88,7 @@ module.exports = {
                 obj.status = 0
                 
                 const teamhome = data[1]
-                const chechTeamHouse = await team.teamFind(teamhome)
+                const chechTeamHouse = await team.teamFindBySurname(teamhome)
                 if(!chechTeamHouse){
                     const team = await teamsUtils.createTeam(teamhome,acronym[(index*2)],"club")
                     obj.idHomeTeam = team._id

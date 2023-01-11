@@ -132,7 +132,26 @@ class matchesController{
         }
     }  
     
-
+    async findMatch(request,response){
+        try {
+            
+            const matches = await Matches
+                .findOne()
+                .populate(["idChampionship","idHomeTeam","idAwayTeam"])
+                
+            return response.status(200).json({
+                message: "Todas as partidas cadastradas",
+                matches
+            })
+        } catch (error) {
+            return response.status(500).json({
+                error: "Registration failed",
+                message: error
+            })
+        }
+    }
+    
+    
     async aggregateMatches(request, response){
         try {
             const match = await Matches.aggregate(
